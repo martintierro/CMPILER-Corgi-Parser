@@ -14,9 +14,9 @@ public class Driver {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Java9Lexer lexer = new Java9Lexer(cs);  //instantiate a lexer
+        Java9TestLexer lexer = new Java9TestLexer(cs);  //instantiate a lexer
         CommonTokenStream tokens = new CommonTokenStream(lexer); //scan stream for tokens
-        Java9Parser parser = new Java9Parser(tokens);  //parse the tokens
+        Java9TestParser parser = new Java9TestParser(tokens);  //parse the tokens
 
         ParseTree tree = parser.classDeclaration(); // parse the content and get the tree
         myListener listener = new myListener();
