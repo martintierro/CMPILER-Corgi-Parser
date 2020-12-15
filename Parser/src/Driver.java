@@ -18,7 +18,13 @@ public class Driver {
         CommonTokenStream tokens = new CommonTokenStream(lexer); //scan stream for tokens
         Java9TestParser parser = new Java9TestParser(tokens);  //parse the tokens
 
-        ParseTree tree = parser.classDeclaration(); // parse the content and get the tree
+//        Java8Lexer lexer = new Java8Lexer(cs);  //instantiate a lexer
+//        CommonTokenStream tokens = new CommonTokenStream(lexer); //scan stream for tokens
+//        Java8Parser parser = new Java8Parser(tokens);  //parse the tokens
+//        parser.removeErrorListeners();
+//        parser.addErrorListener(ThrowingErrorListener.INSTANCE);
+
+        ParseTree tree = parser.start(); // parse the content and get the tree
         myListener listener = new myListener();
 
         ParseTreeWalker walker = new ParseTreeWalker();
