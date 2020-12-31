@@ -355,6 +355,8 @@ variableInitializerList
 
 block
 	:	'{' blockStatements? '}'
+    |   '{' blockStatements? '}' '}' {notifyErrorListeners("Too many closing brackets");}
+    |   '{' blockStatements? {notifyErrorListeners("Missing closing '}'");}
 	;
 
 blockStatements
@@ -600,6 +602,7 @@ arrayAccess_lfno_primary
 
 methodInvocation
 	:	methodName '(' argumentList? ')'
+	|   methodName  '(' argumentList? ')' ('(' argumentList? ')')+ {notifyErrorListeners("Multiple parenthesis found for parameters");}
 	|	typeName '.' typeArguments? identifier '(' argumentList? ')'
 	|	expressionName '.' typeArguments? identifier '(' argumentList? ')'
 	|	primary '.' typeArguments? identifier '(' argumentList? ')'
@@ -617,6 +620,7 @@ methodInvocation_lfno_primary
 
 argumentList
 	:	expression (',' expression)*
+	|   expression expression* {notifyErrorListeners("Invalid expression in parameters");}
 	;
 
 methodReference
@@ -651,6 +655,14 @@ constantExpression
 
 expression
 	:	assignmentExpression
+	|   assignmentExpression ADD {notifyErrorListeners("Unexpected '+'");}
+	|   assignmentExpression SUB {notifyErrorListeners("Unexpected '-'");}
+	|   assignmentExpression MUL {notifyErrorListeners("Unexpected '*'");}
+	|   assignmentExpression DIV {notifyErrorListeners("Unexpected '/'");}
+	|   assignmentExpression EQUAL {notifyErrorListeners("Unexpected '='");}
+    |   assignmentExpression MOD {notifyErrorListeners("Unexpected '%'");}
+    |   assignmentExpression AND {notifyErrorListeners("Unexpected '&&'");}
+    |   assignmentExpression NOTEQUAL {notifyErrorListeners("Unexpected '!'");}
 	;
 
 
@@ -686,6 +698,7 @@ assignmentOperator
 
 conditionalExpression
 	:	conditionalOrExpression
+	|   conditionalOrExpression assignmentOperator conditionalAndExpression {notifyErrorListeners("Expecting conditional statement in place of assignment operator");}
 	;
 
 conditionalOrExpression

@@ -6,7 +6,7 @@ void testOne() {
 
 	for(int i; i<10;i++) { //syntax error #1
 		print("Petmalu " +x+); //syntax error #2
-    }
+
 	//syntax error #3 (missing curly brace)
 }
 

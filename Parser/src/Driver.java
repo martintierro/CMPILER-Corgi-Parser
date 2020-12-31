@@ -29,5 +29,8 @@ public class Driver {
 
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(listener,tree);
+
+        myJavaVisitor visitor = new myJavaVisitor();
+        visitor.visit(tree);
     }
 }
