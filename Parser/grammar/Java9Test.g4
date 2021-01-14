@@ -459,7 +459,8 @@ forStatementNoShortIf
 	;
 
 basicForStatement
-	:	'for' '(' forInit? ';' conditionalExpression? ';' forUpdate? ')' statement
+	:	'for' '(' forInit? '=' ';' conditionalExpression? ';' forUpdate? ')' statement
+	|	'for' '(' forInit? ';' conditionalExpression? ';' forUpdate? ')' statement
 	;
 
 basicForStatementNoShortIf
@@ -468,7 +469,7 @@ basicForStatementNoShortIf
 
 forInit
 	:	statementExpressionList
-	|	localVariableDeclaration
+	|	localVariableDeclaration {notifyErrorListeners("Cannot declare variables inside for loop initialization");}
 	;
 
 forUpdate
@@ -482,6 +483,7 @@ statementExpressionList
 
 returnStatement
 	:	'return' expression? ';'
+	|   'return' primitiveType? ';' {notifyErrorListeners("Invalid return statement");}
 	;
 
 
@@ -750,14 +752,39 @@ shiftExpression
 additiveExpression
 	:	multiplicativeExpression
 	|	additiveExpression '+' multiplicativeExpression
+	|	additiveExpression '++' multiplicativeExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	additiveExpression '+' '-' multiplicativeExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	additiveExpression '+' '*' multiplicativeExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	additiveExpression '+' '/' multiplicativeExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	additiveExpression '+' '%' multiplicativeExpression	{notifyErrorListeners("Extra operator inside expression");}
 	|	additiveExpression '-' multiplicativeExpression
+	|	additiveExpression '-' '+' multiplicativeExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	additiveExpression '-' '-' multiplicativeExpression {notifyErrorListeners("Extra operator inside expression");}
+    |	additiveExpression '-' '*' multiplicativeExpression {notifyErrorListeners("Extra operator inside expression");}
+    |	additiveExpression '-' '/' multiplicativeExpression {notifyErrorListeners("Extra operator inside expression");}
+    |	additiveExpression '-' '%' multiplicativeExpression {notifyErrorListeners("Extra operator inside expression");}
 	;
 
 multiplicativeExpression
 	:	unaryExpression
 	|	multiplicativeExpression '*' unaryExpression
+	|	multiplicativeExpression '*' '+' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	multiplicativeExpression '*' '-' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	multiplicativeExpression '*' '*' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	multiplicativeExpression '*' '/' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	multiplicativeExpression '*' '%' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
 	|	multiplicativeExpression '/' unaryExpression
+	|	multiplicativeExpression '/' '+' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	multiplicativeExpression '/' '-' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	multiplicativeExpression '/' '*' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	multiplicativeExpression '/' '/' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	multiplicativeExpression '/' '%' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
 	|	multiplicativeExpression '%' unaryExpression
+	|	multiplicativeExpression '%' '+' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	multiplicativeExpression '%' '-' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	multiplicativeExpression '%' '*' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	multiplicativeExpression '%' '/' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
+	|	multiplicativeExpression '%' '%' unaryExpression {notifyErrorListeners("Extra operator inside expression");}
 	;
 
 unaryExpression

@@ -25,10 +25,10 @@ public class Driver {
 //        parser.addErrorListener(ThrowingErrorListener.INSTANCE);
 
         ParseTree tree = parser.start(); // parse the content and get the tree
-        myListener listener = new myListener();
-
-        ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(listener,tree);
+//        myListener listener = new myListener();
+//
+//        ParseTreeWalker walker = new ParseTreeWalker();
+//        walker.walk(listener,tree);
 
         myJavaVisitor visitor = new myJavaVisitor();
         visitor.visit(tree);
