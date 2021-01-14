@@ -21,13 +21,16 @@ public class Driver {
 //        Java8Lexer lexer = new Java8Lexer(cs);  //instantiate a lexer
 //        CommonTokenStream tokens = new CommonTokenStream(lexer); //scan stream for tokens
 //        Java8Parser parser = new Java8Parser(tokens);  //parse the tokens
-//        parser.removeErrorListeners();
-//        parser.addErrorListener(ThrowingErrorListener.INSTANCE);
+        parser.removeErrorListeners();
+        parser.addErrorListener(CustomErrorListener.INSTANCE);
 
         ParseTree tree = parser.start(); // parse the content and get the tree
-        myListener listener = new myListener();
+//        myListener listener = new myListener();
+//
+//        ParseTreeWalker walker = new ParseTreeWalker();
+//        walker.walk(listener,tree);
 
-        ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(listener,tree);
+        Java9TestBaseVisitor java9TestBaseVisitor = new Java9TestBaseVisitor();
+        java9TestBaseVisitor.visit(tree);
     }
 }
