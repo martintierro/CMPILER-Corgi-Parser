@@ -355,7 +355,13 @@ variableInitializerList
 
 block
 	:	'{' blockStatements? '}'
+//	|   missingRBraceBlock
 	;
+
+
+//missingRBraceBlock
+//    : '{' blockStatements?
+//    ;
 
 blockStatements
 	:	blockStatement+
