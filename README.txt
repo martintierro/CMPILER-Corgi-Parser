@@ -1,0 +1,7 @@
+
+
+SINGIAN, JARRETT ETHAN T.     TIERRO, MARTIN    TAN, JADE
+
+HOW TO RUN:
+
+Add code into program.txt then run the program. 
