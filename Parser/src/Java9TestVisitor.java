@@ -1,4 +1,4 @@
-// Generated from D:/Projects/CMPILER Projects/ParserMP/Parser/grammar\Java9Test.g4 by ANTLR 4.9
+// Generated from D:/Projects/CMPILER Projects/ParserMP/Parser/grammar\Corgi.g4 by ANTLR 4.9
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**

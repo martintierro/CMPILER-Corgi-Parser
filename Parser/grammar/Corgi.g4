@@ -62,7 +62,7 @@ Total lexer+parser time 3634ms.
 Total lexer+parser time 2497ms.
 
  */
-grammar Java9Test;
+grammar Corgi;
 
 /*
  * Productions from §3 (Lexical Structure)
@@ -387,7 +387,17 @@ statement
 	|	ifThenElseStatement
 	|	whileStatement
 	|	forStatement
+	|   printStatement
+	|   scanStatement
 	;
+
+printStatement
+    : 'woof' '(' argumentList? ')'
+    ;
+
+scanStatement
+    : 'listen' '(' argumentList? ')'
+    ;
 
 statementNoShortIf
 	:	statementWithoutTrailingSubstatement

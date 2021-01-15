@@ -14,28 +14,28 @@ public class CustomErrorListener extends BaseErrorListener {
 
         List<String> stack = ((Parser)recognizer).getRuleInvocationStack(); Collections.reverse(stack);
         CommonToken token = (CommonToken) offendingSymbol;
-        Java9TestLexer lexer = new Java9TestLexer(token.getInputStream());
+        CorgiLexer lexer = new CorgiLexer(token.getInputStream());
         String type = lexer.getVocabulary().getSymbolicName(token.getType());
 //        System.err.println("line " + line + ":" + charPositionInLine + " " + msg);
-
-
         if(msg.contains("missing")){
             String[] temp = msg.split("missing");
             String[] tokens = temp[1].split("at");
 
-            System.err.println("Line " + line + ":" + charPositionInLine + " is missing"+ tokens[0] + "before"+ tokens[1] + "." );
+            System.err.println("Line " + line + ":" + charPositionInLine + " is missing"+ tokens[0] + "before"+ tokens[1] + ". Consider adding" + tokens[0] +"before"+tokens[1]);
         }
         else if (msg.contains("no viable alternative at input")){
             String[] tokens = msg.split("no viable alternative at input");
 
-            System.err.println("Line "+ line + ":" + charPositionInLine + " could not find a valid token for" + tokens[1] +"." );
-
+            System.err.println("Line "+ line + ":" + charPositionInLine + " could not find a valid token for" + tokens[1] +". Consider changing" + tokens[1] );;
         }
         else if (msg.contains("mismatched input")){
             String[] temp = msg.split("mismatched input");
             String[] tokens = temp[1].split("expecting");
-
-            System.err.println("Line "+ line + ":" + charPositionInLine + tokens[0] + "did not match any token, try using" + tokens[1] +"." );
+            if(tokens[1].contains("Identifier")){
+                System.err.println("Line "+ line + ":" + charPositionInLine + tokens[0] + "did not match any token, try replacing with an identifier." );
+            }else {
+                System.err.println("Line " + line + ":" + charPositionInLine + tokens[0] + "did not match any token, try using" + tokens[1] + ".");
+            }
 
         } else if (msg.contains("token recognition error")){
             System.err.println("Line "+ line + ":" + charPositionInLine + "has a token recognition error");
@@ -43,7 +43,7 @@ public class CustomErrorListener extends BaseErrorListener {
             String[] temp = msg.split("extraneous input");
             String[] tokens = temp[1].split("expecting");
 
-            System.err.println("Line "+ line + ":" + charPositionInLine + " may have extra" + tokens[0] + ", replace with" + tokens[1]);
+            System.err.println("Line "+ line + ":" + charPositionInLine + " may have extra" + tokens[0] + ". Consider replacing with" + tokens[1]);
 
         }
 //        System.err.println("line " + line + ":" + charPositionInLine + " " + type);

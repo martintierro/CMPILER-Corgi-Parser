@@ -14,9 +14,9 @@ public class Driver {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Java9TestLexer lexer = new Java9TestLexer(cs);  //instantiate a lexer
+        CorgiLexer lexer = new CorgiLexer(cs);  //instantiate a lexer
         CommonTokenStream tokens = new CommonTokenStream(lexer); //scan stream for tokens
-        Java9TestParser parser = new Java9TestParser(tokens);  //parse the tokens
+        CorgiParser parser = new CorgiParser(tokens);  //parse the tokens
 
 //        Java8Lexer lexer = new Java8Lexer(cs);  //instantiate a lexer
 //        CommonTokenStream tokens = new CommonTokenStream(lexer); //scan stream for tokens
@@ -30,7 +30,7 @@ public class Driver {
 //        ParseTreeWalker walker = new ParseTreeWalker();
 //        walker.walk(listener,tree);
 
-        Java9TestBaseVisitor java9TestBaseVisitor = new Java9TestBaseVisitor();
-        java9TestBaseVisitor.visit(tree);
+        CorgiBaseVisitor visitor = new CorgiBaseVisitor();
+        visitor.visit(tree);
     }
 }

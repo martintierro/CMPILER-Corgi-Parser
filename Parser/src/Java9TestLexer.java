@@ -1,4 +1,4 @@
-// Generated from D:/Projects/CMPILER Projects/ParserMP/Parser/grammar\Java9Test.g4 by ANTLR 4.9
+// Generated from D:/Projects/CMPILER Projects/ParserMP/Parser/grammar\Corgi.g4 by ANTLR 4.9
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -157,7 +157,7 @@ public class Java9TestLexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "Java9Test.g4"; }
+	public String getGrammarFileName() { return "Corgi.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

@@ -16,7 +16,7 @@ int main() {
 
 
 int myFunction(int x) {
-	int add = x + 50 ++ 1; //syntax error #1
+	int add = x++ 1; //syntax error #1
 
 	return int; //syntax error #2
 }
