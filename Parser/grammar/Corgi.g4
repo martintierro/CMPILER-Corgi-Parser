@@ -391,6 +391,7 @@ statement
 printStatement
 //    : 'woof' '(' argumentList? ')'
     : 'woof' '(' StringLiteral (ADD expression)? ')'
+    | 'woof' '(' StringLiteral (ADD expression)? ADD ')' {notifyErrorListeners("may have extra '+' symbol");}
     | 'woof' '(' (expression)? ')' {notifyErrorListeners("may be lacking a string or quotation marks");}
     ;
 
@@ -762,16 +763,18 @@ shiftExpression
 	;
 
 additiveExpression
-	:	multiplicativeExpression
+	:	additiveExpression '+''+' multiplicativeExpression {notifyErrorListeners("has an extra '+' operator");}
+	|	multiplicativeExpression
+	|	additiveExpression '+' additiveExpression
 	|	additiveExpression '+' multiplicativeExpression
-	|	additiveExpression '+''+' multiplicativeExpression {notifyErrorListeners("has an extra '+' operator");}
 	|	additiveExpression '-' multiplicativeExpression
-	|	additiveExpression '-''-' multiplicativeExpression {notifyErrorListeners("has an extra '-' operator");}
+	|	additiveExpression '-''-' additiveExpression {notifyErrorListeners("has an extra '-' operator");}
 	;
 
 multiplicativeExpression
 	:	unaryExpression
 	|	multiplicativeExpression '*' unaryExpression
+	|	multiplicativeExpression '*''*' additiveExpression {notifyErrorListeners("has an extra '*' operator");}
 	|	multiplicativeExpression '/' unaryExpression
 	|	multiplicativeExpression '%' unaryExpression
 	;
