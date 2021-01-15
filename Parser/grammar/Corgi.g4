@@ -355,13 +355,10 @@ variableInitializerList
 
 block
 	:	'{' blockStatements? '}'
-//	|   missingRBraceBlock
+//	|   '{' blockStatements?  {notifyErrorListener("missing '}'");}
+
 	;
 
-
-//missingRBraceBlock
-//    : '{' blockStatements?
-//    ;
 
 blockStatements
 	:	blockStatement+
@@ -616,6 +613,11 @@ arrayAccess_lfno_primary
 
 methodInvocation
 	:	methodName '(' argumentList? ')'
+	|   methodName '(' expression (INC|DEC) expression ')' {notifyErrorListeners("function call may have extra operators.");}
+	|   methodName '(' expression expression ')' {notifyErrorListeners("function call may be lacking an operator or ','.");}
+	|   methodName '(' argumentList? ')' ('('argumentList?')')* {notifyErrorListeners("function call may have extra parenthesis.");}
+	|   methodName '(' argumentList? ')' ('('|')') {notifyErrorListeners("function call may have extra parenthesis.");}
+	|   methodName '(' argumentList? {notifyErrorListeners("function call may be lacking parenthesis.");}
 	|	typeName '.' typeArguments? identifier '(' argumentList? ')'
 	|	expressionName '.' typeArguments? identifier '(' argumentList? ')'
 	|	primary '.' typeArguments? identifier '(' argumentList? ')'
@@ -633,6 +635,10 @@ methodInvocation_lfno_primary
 
 argumentList
 	:	expression (',' expression)*
+	|   expression (ADD | SUB | MUL | DIV) {notifyErrorListeners("may have an extra operator.");}
+	|   expression (','(',')+ expression)* {notifyErrorListeners("may have an extra ','.");}
+
+//	|   expression (' ' expression) {notifyErrorListeners("may be missing \"\"");}
 	;
 
 methodReference
@@ -683,6 +689,8 @@ assignmentExpression
 
 assignment
 	:	leftHandSide assignmentOperator expression
+	|	leftHandSide assignmentOperator IntegerLiteral expression {notifyErrorListeners("may be lacking an operator.");}
+//	|	leftHandSide assignmentOperator (expression (ADD|SUB|MUL|DIV)* expression)* {notifyErrorListeners("may have an operator.");}
 	;
 
 leftHandSide
@@ -702,6 +710,7 @@ assignmentOperator
 
 conditionalExpression
 	:	conditionalOrExpression
+	|   conditionalExpression '<' '>' '>' conditionalOrExpression {notifyErrorListeners("may have invalid comparison operators in expression");}
 	;
 
 conditionalOrExpression
@@ -753,7 +762,9 @@ shiftExpression
 additiveExpression
 	:	multiplicativeExpression
 	|	additiveExpression '+' multiplicativeExpression
+	|	additiveExpression '+''+' multiplicativeExpression {notifyErrorListeners("has an extra '+' operator");}
 	|	additiveExpression '-' multiplicativeExpression
+	|	additiveExpression '-''-' multiplicativeExpression {notifyErrorListeners("has an extra '-' operator");}
 	;
 
 multiplicativeExpression

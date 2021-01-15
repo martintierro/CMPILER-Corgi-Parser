@@ -8,6 +8,8 @@ public class CustomErrorListener extends BaseErrorListener {
 
     public static final CustomErrorListener INSTANCE = new CustomErrorListener();
 
+    private final String[] keywords = new String[]{"const", "void", "public", "private", "static", "final", "int", "double", "short", "long", "char", "float", "woof"};
+
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e)
             throws ParseCancellationException {
@@ -19,21 +21,39 @@ public class CustomErrorListener extends BaseErrorListener {
 //        System.err.println("line " + line + ":" + charPositionInLine + " " + msg);
         if(msg.contains("missing")){
             String[] temp = msg.split("missing");
-            String[] tokens = temp[1].split("at");
-
-            System.err.println("Line " + line + ":" + charPositionInLine + " is missing"+ tokens[0] + "before"+ tokens[1] + ". Consider adding" + tokens[0] +"before"+tokens[1]);
+            if(temp[1].contains("'}'")){
+                System.err.println("Line " + line + ":" + charPositionInLine + " consider adding a '}'");
+            }else {
+                String[] tokens = temp[1].split("at");
+                System.err.println("Line " + line + ":" + charPositionInLine + " consider adding" + tokens[0] + "before" + tokens[1]);
+            }
         }
         else if (msg.contains("no viable alternative at input")){
             String[] tokens = msg.split("no viable alternative at input");
 
-            System.err.println("Line "+ line + ":" + charPositionInLine + " could not find a valid token for" + tokens[1] +". Consider changing" + tokens[1] );;
+            boolean flag = true;
+            for(String a: keywords){
+                if(tokens[1].contains(a)){
+                    System.err.println("Line "+ line + ":" + charPositionInLine + " could not find a valid token for" + tokens[1] +". May have a typo or duplicate." );
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                System.err.println("Line "+ line + ":" + charPositionInLine + " could not find a valid token for" + tokens[1] +". Consider changing" + tokens[1] );
+            }
+
+
         }
         else if (msg.contains("mismatched input")){
             String[] temp = msg.split("mismatched input");
             String[] tokens = temp[1].split("expecting");
             if(tokens[1].contains("Identifier")){
                 System.err.println("Line "+ line + ":" + charPositionInLine + tokens[0] + "did not match any token, try replacing with an identifier." );
-            }else {
+            }else if(tokens[1].contains("==")){
+                System.err.println("Line "+ line + ":" + charPositionInLine + tokens[0] + "did not match any token, try replacing with a comparison operator." );
+            }
+            else {
                 System.err.println("Line " + line + ":" + charPositionInLine + tokens[0] + "did not match any token, try using" + tokens[1] + ".");
             }
 
@@ -43,8 +63,14 @@ public class CustomErrorListener extends BaseErrorListener {
             String[] temp = msg.split("extraneous input");
             String[] tokens = temp[1].split("expecting");
 
-            System.err.println("Line "+ line + ":" + charPositionInLine + " may have extra" + tokens[0] + ". Consider replacing with" + tokens[1]);
+            if(tokens[1].contains("Identifier")){
+                System.err.println("Line "+ line + ":" + charPositionInLine + tokens[0] + "may be unnecessary, try adding an identifier." );
+            } else {
+                System.err.println("Line " + line + ":" + charPositionInLine + " may have extra" + tokens[0] + ". Consider replacing with" + tokens[1]);
+            }
 
+        } else{
+            System.err.println("Line "+ line + ":" + charPositionInLine + " " + msg);
         }
 //        System.err.println("line " + line + ":" + charPositionInLine + " " + type);
 //        switch (type) {
