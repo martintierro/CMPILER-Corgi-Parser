@@ -3,12 +3,12 @@
 //remove 'func' keyword if C-based language
 void testOne() {
 	int x = 0;
-	scan("Hello. I need your number: " ,x);
+	listen("Hello. I need your number: " ,x);
 
 	//syntax error #1 - no "up to". If C-based language, use for(int i = 0; i <>>; i++){
 	for(int i = 0; i <>>; i++) {
 		woof("Petmalu " +x+); //syntax error #2
-
+    }
 
 	//syntax error #3 (missing curly brace)
 
@@ -44,7 +44,7 @@ void main() {
 	testThree((12 * 10), (54 * 5); //syntax error #15
 	testThree(4,,5); //syntax error #16
 
-	print(nextValue is: 4!); //syntax error #17
+	woof(nextValue is: 4!); //syntax error #17
 
 	constt int CONSTANT = 5; //syntax error #18
 	float float = 5.0f; //syntax error #19

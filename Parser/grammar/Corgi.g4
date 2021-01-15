@@ -389,7 +389,9 @@ statement
 	;
 
 printStatement
-    : 'woof' '(' argumentList? ')'
+//    : 'woof' '(' argumentList? ')'
+    : 'woof' '(' StringLiteral (ADD expression)? ')'
+    | 'woof' '(' (expression)? ')' {notifyErrorListeners("may be lacking a string or quotation marks");}
     ;
 
 scanStatement

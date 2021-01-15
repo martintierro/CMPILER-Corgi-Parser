@@ -18,17 +18,10 @@ public class Driver {
         CommonTokenStream tokens = new CommonTokenStream(lexer); //scan stream for tokens
         CorgiParser parser = new CorgiParser(tokens);  //parse the tokens
 
-//        Java8Lexer lexer = new Java8Lexer(cs);  //instantiate a lexer
-//        CommonTokenStream tokens = new CommonTokenStream(lexer); //scan stream for tokens
-//        Java8Parser parser = new Java8Parser(tokens);  //parse the tokens
         parser.removeErrorListeners();
         parser.addErrorListener(CustomErrorListener.INSTANCE);
 
         ParseTree tree = parser.start(); // parse the content and get the tree
-//        myListener listener = new myListener();
-//
-//        ParseTreeWalker walker = new ParseTreeWalker();
-//        walker.walk(listener,tree);
 
         CorgiBaseVisitor visitor = new CorgiBaseVisitor();
         visitor.visit(tree);
