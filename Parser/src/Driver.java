@@ -14,14 +14,16 @@ public class Driver {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Java9Lexer lexer = new Java9Lexer(cs);  //instantiate a lexer
+        CorgiLexer lexer = new CorgiLexer(cs);  //instantiate a lexer
         CommonTokenStream tokens = new CommonTokenStream(lexer); //scan stream for tokens
-        Java9Parser parser = new Java9Parser(tokens);  //parse the tokens
+        CorgiParser parser = new CorgiParser(tokens);  //parse the tokens
 
-        ParseTree tree = parser.classDeclaration(); // parse the content and get the tree
-        myListener listener = new myListener();
+        parser.removeErrorListeners();
+        parser.addErrorListener(CustomErrorListener.INSTANCE);
 
-        ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(listener,tree);
+        ParseTree tree = parser.start(); // parse the content and get the tree
+
+        CorgiBaseVisitor visitor = new CorgiBaseVisitor();
+        visitor.visit(tree);
     }
 }
